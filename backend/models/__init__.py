@@ -1,4 +1,6 @@
-from models.base import BaseModel
-from models.users import User  # noqa
+__all__ = ["Base", "User"]
 
-metadata = BaseModel.metadata
+from models.base import Base
+from models.users import User
+
+metadata = Base.metadata
