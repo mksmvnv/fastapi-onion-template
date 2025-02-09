@@ -10,7 +10,7 @@ PASSWORD_MIN_LEN = 8
 PASSWORD_MAX_LEN = 32
 
 # Bcrypt
-UTF_8 = "utf-8"
+UTF8 = "utf-8"
 
 # Queries
 DEFAULT_PAGE = 1
