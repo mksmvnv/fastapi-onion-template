@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Query, status
 
-from schemas.v1.users import UserResponse
+from schemas.v1.users import UserResponse, UserUpdate
 from utils.dependencies import user_service_dep
 from utils.constants import DEFAULT_PAGE, DEFAULT_LIMIT, MAX_LIMIT
 
@@ -62,3 +62,28 @@ async def get_users(
     users = await user_service.get_users(page, limit)
 
     return users
+
+
+@router.patch(
+    "/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK
+)
+async def update_user(
+    user_id: int, user_update: UserUpdate, user_service: user_service_dep
+):
+    """
+    Update a user by their ID.
+
+    Args:
+        user_id (int): The ID of the user to update.
+        user_update (UserUpdate): The user update data.
+
+    Returns:
+        UserResponse: The updated user in response format.
+
+    Raises:
+        HTTPException: If the user is not found or update fails.
+    """
+
+    user = await user_service.update_user(user_id, user_update)
+
+    return user
