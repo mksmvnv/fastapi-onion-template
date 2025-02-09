@@ -1,14 +1,22 @@
-.PHONY: all run lint format
+.PHONY: all run lint format install
 
-SRC = backend
+ABS := $(shell pwd)
+SRC := $(ABS)/backend
 
-all: format run
+all: format lint run
 
 run:
-	fastapi dev $(SRC)/main.py
+	@poetry run python3 $(SRC)/main.py
 
 lint:
-	flake8 $(SRC)
+	@poetry run flake8 $(SRC)
+	@poetry run mypy $(SRC)
 
 format:
-	autopep8 -ira $(SRC)
+	@poetry run black $(SRC)
+
+depends:
+	@poetry export -f requirements.txt -o $(ABS)/requirements.txt --with dev --without-hashes
+
+install:
+	@poetry install
