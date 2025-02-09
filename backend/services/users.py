@@ -3,7 +3,7 @@ from typing import List
 from fastapi import HTTPException, status
 
 from utils.uow import AbstractUnitOfWork
-from schemas.v1.users import UserResponse
+from schemas.v1.users import UserResponse, UserUpdate
 
 
 class UserService:
@@ -59,3 +59,32 @@ class UserService:
                 )
 
             return [UserResponse.model_validate(user) for user in users]
+
+    async def update_user(
+        self, user_id: int, user_update: UserUpdate
+    ) -> UserResponse:
+        """
+        Update a user by their ID.
+
+        Args:
+            user_id (int): The ID of the user to update.
+            user_update (UserUpdate): The user update data.
+
+        Returns:
+            UserResponse: The updated user in response format.
+
+        Raises:
+            HTTPException: If the user is not found.
+        """
+
+        async with self.uow:
+            user_data = user_update.model_dump()
+            user = await self.uow.user_repository.update(user_id, user_data)
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found",
+                )
+            await self.uow.commit()
+
+            return UserResponse.model_validate(user)
