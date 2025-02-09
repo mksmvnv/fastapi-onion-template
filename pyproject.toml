@@ -1,3 +1,6 @@
+[tool.mypy]
+plugins = "pydantic.mypy"
+
 [tool.black]
 line-length = 79
 
@@ -11,17 +14,19 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+uvicorn = "^0.34.0"
 fastapi = {extras = ["standard"], version = "^0.115.8"}
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.37"}
 pydantic = {extras = ["email"], version = "^2.10.6"}
-aiosqlite = "^0.20.0"
 pydantic-settings = "^2.7.1"
+aiosqlite = "^0.20.0"
 alembic = "^1.14.1"
-black = "^25.1.0"
+bcrypt = "^4.2.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
 flake8 = "^7.1.1"
-autopep8 = "^2.3.2"
+mypy = "^1.15.0"
 
 [build-system]
 requires = ["poetry-core"]
