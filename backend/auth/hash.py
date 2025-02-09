@@ -1,6 +1,6 @@
 from bcrypt import gensalt, hashpw, checkpw
 
-from utils.constants import UTF_8
+from utils.constants import UTF8
 
 
 def hash_password(password: str) -> str:
@@ -14,7 +14,7 @@ def hash_password(password: str) -> str:
     """
 
     salt = gensalt()
-    hashed_password = hashpw(password.encode(UTF_8), salt).decode(UTF_8)
+    hashed_password = hashpw(password.encode(UTF8), salt).decode(UTF8)
 
     return hashed_password
 
@@ -30,6 +30,6 @@ def verify_password(password: str, hashed_password: str) -> bool:
         bool: True if password matches, False otherwise.
     """
 
-    check = checkpw(password.encode(UTF_8), hashed_password.encode(UTF_8))
+    check = checkpw(password.encode(UTF8), hashed_password.encode(UTF8))
 
     return check
