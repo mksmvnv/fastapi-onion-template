@@ -1,0 +1,13 @@
+app:
+  title: "FastAPI onion template"
+  version: "1.0"
+  root_path: "/api/v1"
+  port: 8000
+
+database:
+  url: "sqlite+aiosqlite:///backend/database/db.sqlite3"
+
+query:
+  default_page: 1
+  default_limit: 10
+  max_limit: 100
