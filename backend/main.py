@@ -3,13 +3,13 @@ import uvicorn
 from fastapi import FastAPI
 
 from routers.v1 import all_routers
-from utils.constants import TITLE, VERSION, API_PREFIX
+from config.config import settings
 
 
 app = FastAPI(
-    title=TITLE,
-    version=VERSION,
-    root_path=API_PREFIX,
+    title=settings.app.title,
+    version=settings.app.version,
+    root_path=settings.app.root_path,
 )
 
 for router_v1 in all_routers:
@@ -17,4 +17,4 @@ for router_v1 in all_routers:
 
 
 if __name__ == "__main__":
-    uvicorn.run(app="main:app", port=8005, reload=True)
+    uvicorn.run(app="main:app", port=settings.app.port, reload=True)

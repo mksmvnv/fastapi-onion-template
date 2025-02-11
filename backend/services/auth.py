@@ -1,8 +1,8 @@
 from fastapi import HTTPException, status
 
-from utils.uow import AbstractUnitOfWork
-from schemas.v1.users import UserRegister, UserResponse
-from auth.hash import hash_password
+from schemas import UserRegister, UserResponse
+from repositories.uow import AbstractUnitOfWork
+from auth.security import hash_password
 
 
 class AuthService:

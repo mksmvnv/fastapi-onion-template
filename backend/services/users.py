@@ -2,8 +2,8 @@ from typing import List
 
 from fastapi import HTTPException, status
 
-from utils.uow import AbstractUnitOfWork
-from schemas.v1.users import UserResponse, UserUpdate
+from schemas import UserResponse, UserUpdate
+from repositories.uow import AbstractUnitOfWork
 
 
 class UserService:

@@ -2,9 +2,9 @@ from typing import List
 
 from fastapi import APIRouter, Query, status
 
-from schemas.v1.users import UserResponse, UserUpdate
+from config import settings
+from schemas import UserResponse, UserUpdate
 from utils.dependencies import user_service_dep
-from utils.constants import DEFAULT_PAGE, DEFAULT_LIMIT, MAX_LIMIT
 
 
 router = APIRouter(
@@ -42,8 +42,12 @@ async def get_user(
 )
 async def get_users(
     user_service: user_service_dep,
-    page: int = Query(DEFAULT_PAGE, ge=DEFAULT_PAGE),
-    limit: int = Query(DEFAULT_LIMIT, le=MAX_LIMIT),
+    page: int = Query(
+        settings.query.default_page, ge=settings.query.default_page
+    ),
+    limit: int = Query(
+        settings.query.default_limit, le=settings.query.max_limit
+    ),
 ) -> List[UserResponse]:
     """
     Retrieve a list of users.
