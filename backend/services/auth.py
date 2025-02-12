@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 
-from schemas import UserRegister, UserResponse
-from repositories.uow import AbstractUnitOfWork
+from utils.uow import AbstractUnitOfWork
+from schemas.users import UserRegister, UserResponse
 from auth.security import hash_password
 
 
@@ -33,17 +33,14 @@ class AuthService:
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Credentials already in use",
                 )
-            if user_register.password != user_register.confirm_password:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Passwords do not match",
-                )
 
             hashed_password = hash_password(
                 user_register.password.get_secret_value()
             )
             user_data = user_register.model_dump(
                 exclude={"password", "confirm_password"},
+                exclude_unset=True,
+                exclude_none=True,
             )
             user_data["hashed_password"] = hashed_password
             user = await self.uow.user_repository.create(user_data)
