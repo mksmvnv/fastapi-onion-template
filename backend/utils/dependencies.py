@@ -2,8 +2,9 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from services import AuthService, UserService
-from repositories.uow import AbstractUnitOfWork, UnitOfWork
+from services.auth import AuthService
+from services.users import UserService
+from utils.uow import AbstractUnitOfWork, UnitOfWork
 
 
 UOFDep = Annotated[AbstractUnitOfWork, Depends(UnitOfWork)]
