@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from repositories import BaseRepository
 from models import User
+from repositories.base import BaseRepository
 
 
 class UserRepository(BaseRepository[User]):
@@ -41,22 +41,27 @@ class UserRepository(BaseRepository[User]):
 
         return res.scalar_one_or_none()
 
-    async def is_available(self, username: str, email: str) -> bool:
+    async def is_available(
+        self, username: str | None, email: str | None
+    ) -> bool:
         """
-        Check if a given username and email are available.
+        Checks if the given username and/or email is available.
 
         Args:
-            username (str): The username to be checked.
-            email (str): The email to be checked.
+        username (str | None): The username to check.
+        email (str | None): The email to check.
 
         Returns:
-            bool: True if the username and email are available,
-            False otherwise.
+        bool: True if the given username and/or email is available,
+            otherwise False.
         """
 
-        if await self.get_by_username(username) or await self.get_by_email(
-            email
-        ):
-            return False
+        if username:
+            if await self.get_by_username(username):
+                return False
+
+        if email:
+            if await self.get_by_email(email):
+                return False
 
         return True
