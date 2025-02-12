@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from database import async_session_maker
-from repositories import UserRepository
+from repositories.users import UserRepository
 
 
 class AbstractUnitOfWork(ABC):
