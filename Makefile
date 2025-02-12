@@ -9,6 +9,13 @@ all: format lint run
 run:
 	poetry run python3 $(SRC)/main.py
 
+upgrade:
+	poetry run alembic revision --autogenerate -m "$(MSG)"
+	poetry run alembic upgrade head
+
+downgrade:
+	poetry run alembic downgrade "$(VER)"
+
 lint:
 	poetry run flake8 $(SRC)
 	poetry run mypy $(SRC)
