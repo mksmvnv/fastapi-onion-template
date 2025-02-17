@@ -33,11 +33,9 @@ class Settings(BaseSettings):
     @classmethod
     def from_yaml(cls, path: Path):
         if not path.exists():
-            raise FileNotFoundError(f"Environment file not found: {path}")
-
+            raise FileNotFoundError(f"Config file not found: {path}")
         with config_path.open("r", encoding="utf-8") as f:
             data = yaml.safe_load(f)
-
         return cls(**data)
 
 

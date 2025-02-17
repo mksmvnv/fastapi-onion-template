@@ -18,20 +18,5 @@ router = APIRouter(
 async def register(
     user_register: UserRegister, auth_service: auth_service_dep
 ) -> UserResponse:
-    """
-    Registers a new user.
-
-    Args:
-        user_register (UserRegister): The user registration data.
-
-    Returns:
-        UserResponse: The registered user in response format.
-
-    Raises:
-        HTTPException: If the credentials are already in use
-            or the passwords do not match.
-    """
-
     user = await auth_service.register(user_register)
-
     return user
