@@ -11,7 +11,6 @@ from pydantic import (
     StrictBool,
     ConfigDict,
     model_validator,
-    field_validator,
 )
 
 from utils.exceptions import (
