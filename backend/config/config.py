@@ -13,6 +13,12 @@ class AppSettings(BaseModel):
     port: int
 
 
+class AuthSettings(BaseModel):
+    private_key_path: Path
+    public_key_path: Path
+    algorithm: str
+
+
 class DatabaseSettings(BaseModel):
     url: str
 
@@ -25,6 +31,7 @@ class QuerySettings(BaseModel):
 
 class Settings(BaseSettings):
     app: AppSettings
+    auth: AuthSettings
     database: DatabaseSettings
     query: QuerySettings
 
