@@ -1,3 +1,4 @@
+from uuid import UUID
 from typing import Annotated
 from annotated_types import Len
 from datetime import datetime
@@ -6,28 +7,22 @@ from pydantic import (
     BaseModel,
     EmailStr,
     SecretStr,
-    PositiveInt,
     StrictStr,
     StrictBool,
     ConfigDict,
     model_validator,
+    field_validator,
 )
 
-from utils.constants import (
-    USERNAME_MIN_LENGTH,
-    USERNAME_MAX_LENGTH,
-    NAME_MIN_LENGTH,
-    NAME_MAX_LENGTH,
-    PASSWORD_MIN_LENGTH,
-    PASSWORD_MAX_LENGTH,
+from utils.exceptions import (
+    PasswordsDoNotMatchError,
+    AtLeastOneFieldIsRequiredError,
 )
 
 
-UsernameStr = Annotated[str, Len(USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)]
-NameStr = Annotated[str, Len(NAME_MIN_LENGTH, NAME_MAX_LENGTH)]
-PasswordStr = Annotated[
-    SecretStr, Len(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)
-]
+UsernameStr = Annotated[StrictStr, Len(min_length=2, max_length=16)]
+NameStr = Annotated[StrictStr, Len(min_length=1, max_length=96)]
+PasswordStr = Annotated[SecretStr, Len(min_length=8, max_length=255)]
 
 
 class UserRegister(BaseModel):
@@ -42,14 +37,13 @@ class UserRegister(BaseModel):
     def verify_password_match(cls, values: dict) -> dict:
         password = values.get("password")
         confirm_password = values.get("confirm_password")
-
         if password != confirm_password:
-            raise ValueError("The two passwords did not match.")
+            raise PasswordsDoNotMatchError
         return values
 
 
 class UserResponse(BaseModel):
-    id: PositiveInt
+    id: UUID
     username: UsernameStr
     email: EmailStr
     first_name: NameStr | None = None
@@ -63,7 +57,7 @@ class UserResponse(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    id: PositiveInt
+    id: UUID
     username: UsernameStr | None = None
     email: EmailStr | None = None
     first_name: NameStr | None = None
@@ -79,5 +73,10 @@ class UserUpdate(BaseModel):
                 values.get("last_name"),
             ]
         ):
-            raise ValueError("At least one field must be provided.")
+            raise AtLeastOneFieldIsRequiredError
         return values
+
+
+class UserDeleteResponse(BaseModel):
+    id: UUID
+    status: StrictStr = "deleted"
