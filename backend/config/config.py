@@ -17,6 +17,8 @@ class AuthSettings(BaseModel):
     private_key_path: Path
     public_key_path: Path
     algorithm: str
+    access_token_expire_minutes: int
+    refresh_token_expire_days: int
 
 
 class DatabaseSettings(BaseModel):

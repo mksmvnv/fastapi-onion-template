@@ -15,7 +15,7 @@ from pydantic import (
 
 from utils.exceptions import (
     PasswordsDoNotMatchError,
-    AtLeastOneFieldIsRequiredError,
+    RequiredFieldsError,
 )
 
 
@@ -39,6 +39,11 @@ class UserRegister(BaseModel):
         if password != confirm_password:
             raise PasswordsDoNotMatchError
         return values
+
+
+class UserLogin(BaseModel):
+    username: UsernameStr
+    password: PasswordStr
 
 
 class UserResponse(BaseModel):
@@ -72,7 +77,7 @@ class UserUpdate(BaseModel):
                 values.get("last_name"),
             ]
         ):
-            raise AtLeastOneFieldIsRequiredError
+            raise RequiredFieldsError
         return values
 
 

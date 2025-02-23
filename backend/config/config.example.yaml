@@ -5,9 +5,11 @@ app:
   port: 8000
 
 auth:
-  private_key_path: "certs/private.pem"
-  public_key_path: "certs/public.pem"
+  private_key_path: "abspath/to/certs/private.pem"
+  public_key_path: "abspath/to/certs/public.pem"
   algorithm: "RS256"
+  access_token_expire_minutes: 15
+  refresh_token_expire_days: 30
 
 database:
   url: "sqlite+aiosqlite:///backend/database/db.sqlite3"
